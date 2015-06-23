@@ -1,17 +1,16 @@
 import {
-  Component,
-  Template,
+  ComponentAnnotation as Component,
+  ViewAnnotation as View,
   bootstrap,
-  If,
-  For,
+  NgFor,
   Parent
 } from 'angular2/angular2';
 
 @Component({
     selector: 'hello'
 })
-@Template({
-    inline: `
+@View({
+    template: `
       <tabs>
         <tab [tab-title]="'Tab 1'">Tab 1 Content</tab>
         <tab tab-title="Tab 2">Tab 2 Content</tab>
@@ -24,14 +23,14 @@ export class Hello { }
 @Component({
   selector: 'tabs'
 })
-@Template({
-  inline: `
+@View({
+  template: `
     <ul>
-      <li *for="#tab of tabs" (click)="selectTab(tab)">{{tab.tabTitle}}</li>
+      <li *ng-for="#tab of tabs" (click)="selectTab(tab)">{{tab.tabTitle}}</li>
     </ul>
     <content></content>
   `,
-  directives: [For]
+  directives: [NgFor]
 })
 export class Tabs {
   constructor() {
@@ -55,12 +54,10 @@ export class Tabs {
 
 @Component({
   selector: 'tab',
-  bind: {
-    'tabTitle': 'tab-title'
-  }
+  properties: ['tabTitle: tab-title']
 })
-@Template({
-  inline: `
+@View({
+  template: `
     <div [hidden]="!active">
       <content></content>
     </div>
