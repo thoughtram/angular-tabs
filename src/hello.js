@@ -1,9 +1,9 @@
 import {
-  ComponentAnnotation as Component,
-  ViewAnnotation as View,
+  Component,
+  View,
   bootstrap,
   NgFor,
-  Parent
+  Host
 } from 'angular2/angular2';
 
 @Component({
@@ -28,11 +28,13 @@ export class Hello { }
     <ul>
       <li *ng-for="#tab of tabs" (click)="selectTab(tab)">{{tab.tabTitle}}</li>
     </ul>
-    <content></content>
+    <ng-content></ng-content>
   `,
   directives: [NgFor]
 })
 export class Tabs {
+  tabs:Tab[];
+
   constructor() {
     this.tabs = [];
   }
@@ -59,12 +61,13 @@ export class Tabs {
 @View({
   template: `
     <div [hidden]="!active">
-      <content></content>
+      <ng-content></ng-content>
     </div>
   `
 })
 export class Tab {
-  constructor(@Parent() tabs:Tabs) {
+  active:boolean;
+  constructor(@Host() tabs:Tabs) {
     tabs.addTab(this);
   }
 }
